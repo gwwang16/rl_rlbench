@@ -16,11 +16,14 @@ The implementation of reinforcement learning Algorithm TD3 for robot arm in RLBe
 ### Install
 RLBench is built around PyRep and CoppeliaSim. First head to the [Pyrep](https://github.com/stepjam/PyRep) github page and install them.
 
+After that, go to [RLBench](https://github.com/stepjam/RLBench) github repo and install it .
+
 ### Run
 
 To start  the training program
 
 ```
+$ pip3 install -r requirements.txt
 $ python train_gym.py
 ```
 
