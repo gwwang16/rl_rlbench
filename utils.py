@@ -15,7 +15,6 @@ class CustomLogger(object):
 
     def info(self, string_msg):
         self.logger.info(string_msg)
-    
 
 
 def distance_cal(obs):
