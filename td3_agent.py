@@ -5,7 +5,6 @@ import parl, os
 from parl import layers
 from paddle import fluid
 
-
 class RLBenchAgent(parl.Agent):
     def __init__(self, algorithm, obs_dim, act_dim=8):
         assert isinstance(obs_dim, int)

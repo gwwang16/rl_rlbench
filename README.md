@@ -2,7 +2,7 @@
 
 The implementation of reinforcement learning Algorithm TD3 for robot arm in RLBench Environment.
 
-![](imgs/CoppeliaSim.png)
+![](imgs/rlbench_gym.gif)
 
 ### Dependencies
 

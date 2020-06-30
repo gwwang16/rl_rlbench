@@ -158,6 +158,8 @@ if os.path.exists('model_dir/gym_actor_200.ckpt'):
 
 test_flag = 0
 total_steps = 0
+
+
 while total_steps < MAX_EPISODES:
     train_reward, distance = run_train_episode(env, agent, rpm)
     total_steps += 1
