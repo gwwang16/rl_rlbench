@@ -20,10 +20,22 @@ After that, go to [RLBench](https://github.com/stepjam/RLBench) github repo and 
 
 ### Run
 
-To start  the training program
+To start  the training program with GUI
 
 ```
 $ pip3 install -r requirements.txt
-$ python train_gym.py
+$ python train_gym.py --train --mode='human'
 ```
 
+Render mode: `human`, `rgb_array` and `None`
+
+To test agent
+
+```
+$ python train_gym.py --test --mode='human'
+```
+
+### TO DO
+
+- [x]  RLBench with Gym Env
+- [ ]  RLBench with Simple Task

@@ -1,4 +1,6 @@
 import logging
+import numpy as np
+
 
 class CustomLogger(object):
     def __init__(self, logfile, level=logging.DEBUG):
@@ -16,3 +18,15 @@ class CustomLogger(object):
     
 
 
+def distance_cal(obs):
+    '''calculate distance between end effector and target'''
+    ee_pose = np.array(obs[22:25])
+    target_pose = np.array(obs[-3:])
+
+    distance = np.sqrt((target_pose[0]-ee_pose[0])**2 +
+                       (target_pose[1]-ee_pose[1])**2+(target_pose[2]-ee_pose[2])**2)
+
+    # reward = np.tanh(1/(distance+1e-5))
+    reward = np.exp(-1*distance)
+
+    return distance, reward
