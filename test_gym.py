@@ -98,41 +98,39 @@ def run_train_episode(env, agent, rpm):
     return total_reward, distance
 
 
-# 评估 agent, 跑 5 个episode，总reward求平均
 def evaluate(env, agent, render=False):
-    eval_reward = []
-    for i in range(5):
-        obs = env.reset()
-        total_reward = 0
-        target_pose = np.expand_dims(obs[-3:], axis=0)
 
-        for i in range(EPISODE_LENGTH):
-            batch_obs = np.expand_dims(obs[8:15], axis=0)
-            batch_obs_full = np.concatenate((batch_obs, target_pose), axis=1)
-            action = agent.predict(batch_obs_full.astype('float32'))
+    obs = env.reset()
+    total_reward = 0
+    target_pose = np.expand_dims(obs[-3:], axis=0)
 
-            # Add gripper action again
-            action = np.append(action, 1)
-            
-            action = np.squeeze(action)
-            action = action_mapping(action, env.action_space.low[0],
-                                    env.action_space.high[0])
+    for i in range(EPISODE_LENGTH):
+        batch_obs = np.expand_dims(obs[8:15], axis=0)
+        batch_obs_full = np.concatenate((batch_obs, target_pose), axis=1)
+        action = agent.predict(batch_obs_full.astype('float32'))
 
-            next_obs, reward, done, info = env.step(action)
+        # Add gripper action again
+        action = np.append(action, 1)
+        
+        action = np.squeeze(action)
+        action = action_mapping(action, env.action_space.low[0],
+                                env.action_space.high[0])
 
-            obs = next_obs
-            total_reward += reward
+        next_obs, reward, done, info = env.step(action)
 
-            if render:
-                env.render()
+        obs = next_obs
+        total_reward += reward
 
-            if done:
-                break
-        eval_reward.append(total_reward)
-    return np.mean(eval_reward)
+        if render:
+            env.render()
+
+        if done:
+            break
+
+    return total_reward
 
 
-logger = CustomLogger('train_log/train_gym.txt')
+# logger = CustomLogger('train_log/train_gym.txt')
 # Create rlbench gym env
 env = gym.make('reach_target-state-v0', render_mode='human')
 
@@ -148,35 +146,21 @@ algorithm = TD3(model, max_action=max_action,
                 gamma=GAMMA, tau=TAU, actor_lr=ACTOR_LR,
                 critic_lr=CRITIC_LR)
 agent = RLBenchAgent(algorithm, obs_dim, act_dim)
-
-rpm = ReplayMemory(MEMORY_SIZE, obs_dim, act_dim)
+# rpm = ReplayMemory(MEMORY_SIZE, obs_dim, act_dim)
 # load model
-if os.path.exists('model_dir/gym_actor_200.ckpt'):
-    agent.restore_actor('model_dir/gym_actor_200.ckpt')
-    agent.restore_critic('model_dir/gym_critic_200.ckpt')
+if os.path.exists('model_dir/gym_actor_10000.ckpt'):
+    agent.restore_actor('model_dir/gym_actor_10000.ckpt')
+    agent.restore_critic('model_dir/gym_critic_10000.ckpt')
     print('model loaded')
 
 test_flag = 0
 total_steps = 0
-while total_steps < MAX_EPISODES:
-    train_reward, distance = run_train_episode(env, agent, rpm)
+while total_steps < 10:
     total_steps += 1
-    logger.info('Steps: {}, Distance: {:.4f}, Reward: {}'.format(
-        total_steps, distance, train_reward))
-
-    if total_steps // TEST_EVERY_STEPS >= test_flag:
-        while total_steps // TEST_EVERY_STEPS >= test_flag:
-            test_flag += 1
-
-        evaluate_reward = evaluate(env, agent)
-        logger.info('Steps {}, Evaluate reward: {}'.format(
-            total_steps, evaluate_reward))
-
-        # 保存模型
-        actor_ckpt = 'model_dir/gym_actor_steps_{}.ckpt'.format(total_steps)
-        critic_ckpt = 'model_dir/gym_critic_steps_{}.ckpt'.format(total_steps)
-        agent.save_actor(actor_ckpt)
-        agent.save_critic(critic_ckpt)
+    
+    evaluate_reward = evaluate(env, agent)
+    print('Steps {}, Evaluate reward: {}'.format(
+        total_steps, evaluate_reward))
 
 
 print('Done')
