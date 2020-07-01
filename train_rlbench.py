@@ -183,9 +183,9 @@ def main(args):
 
     rpm = ReplayMemory(MEMORY_SIZE, obs_dim, act_dim)
     # load model
-    if os.path.exists('model_dir/gym_actor_10000.ckpt'):
-        agent.restore_actor('model_dir/gym_actor_10000.ckpt')
-        agent.restore_critic('model_dir/gym_critic_10000.ckpt')
+    if os.path.exists('model_dir/gym_actor_steps_20000.ckpt'):
+        agent.restore_actor('model_dir/gym_actor_steps_20000.ckpt')
+        agent.restore_critic('model_dir/gym_critic_steps_20000.ckpt')
         print('model loaded')
 
     test_flag = 0
@@ -215,7 +215,7 @@ def main(args):
                 agent.save_critic(critic_ckpt)
 
     if args.test:
-        for i in range(10):
+        for i in range(20):
             test_reward = test_episode(env, agent)
             print('Steps {}, Test reward: {}'.format(
                 i, test_reward))

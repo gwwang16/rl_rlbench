@@ -170,9 +170,9 @@ def main(args):
 
     rpm = ReplayMemory(MEMORY_SIZE, obs_dim, act_dim)
     # load model
-    if os.path.exists('model_dir/gym_actor_10000.ckpt'):
-        agent.restore_actor('model_dir/gym_actor_10000.ckpt')
-        agent.restore_critic('model_dir/gym_critic_10000.ckpt')
+    if os.path.exists('model_dir/gym_actor_steps_20000.ckpt'):
+        agent.restore_actor('model_dir/gym_actor_steps_20000.ckpt')
+        agent.restore_critic('model_dir/gym_critic_steps_20000.ckpt')
         print('model loaded')
 
     test_flag = 0

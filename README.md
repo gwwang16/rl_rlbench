@@ -4,7 +4,13 @@ The implementation of reinforcement learning Algorithm TD3 for robot arm in RLBe
 
 Current implementation is on reach target task, more tasks will be added in the future.
 
-![](imgs/rlbench_gym.gif)
+
+
+| ![](imgs/rlbench_env.gif) | ![](imgs/rlbench_gym.gif) |
+| :-------------------------: | :-------------------------: |
+| RLBench Environment       | RLBench Gym Environment   |
+
+
 
 ### Dependencies
 
@@ -37,18 +43,19 @@ To test agent
 $ python train_gym.py --test --mode='human'
 ```
 
-![](imgs/rlbench_gym_reachtarget.png)
+
 
 
 - To start  the training program with **RLBench GUI**
 
 ```
-$ python train_rlbench.py --train --headless
+$ python train_rlbench.py --train
+$ python train_rlbench.py --test
 ```
 
-You can also run it headless with arguement `--headless`
+You can also run it headless with argument `--headless`
 
-![](imgs/rlbench_reachtarget.png)
+
 
 ### TO DO
 
